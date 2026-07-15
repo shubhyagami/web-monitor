@@ -2,8 +2,10 @@ package com.pingmonitor.service;
 
 import com.pingmonitor.model.Website;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,13 +14,13 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Service
 public class MonitorService {
 
-  private final Map<String, Website> websites = new ConcurrentHashMap<>();
+  @Autowired
+  private WebsiteRepository repo;
+
   private final HttpClient client = HttpClient.newBuilder()
       .connectTimeout(Duration.ofSeconds(10))
       .followRedirects(HttpClient.Redirect.NORMAL)
@@ -26,6 +28,7 @@ public class MonitorService {
 
   @PostConstruct
   public void init() {
+    if (repo.count() > 0) return;
     List<String> defaults = List.of(
         "https://musix-fh82.onrender.com",
         "https://chat-in-terminal.onrender.com",
@@ -41,28 +44,32 @@ public class MonitorService {
   }
 
   public List<Website> getWebsites() {
-    return websites.values().stream()
+    return repo.findAll().stream()
         .sorted(Comparator.comparing(Website::getAddedAt).reversed())
-        .collect(Collectors.toList());
+        .toList();
   }
 
+  @Transactional
   public Website addWebsite(String url) {
     String id = UUID.randomUUID().toString().replace("-", "").substring(0, 10);
     Website w = new Website(id, url, true, Instant.now().toString());
-    websites.put(id, w);
-    return w;
+    return repo.save(w);
   }
 
+  @Transactional
   public void removeWebsite(String id) {
-    websites.remove(id);
+    repo.deleteById(id);
   }
 
+  @Transactional
   public Website toggleWebsite(String id) {
-    Website w = websites.get(id);
-    if (w != null) {
+    Optional<Website> opt = repo.findById(id);
+    if (opt.isPresent()) {
+      Website w = opt.get();
       w.setActive(!w.isActive());
+      return repo.save(w);
     }
-    return w;
+    return null;
   }
 
   public Map<String, Object> checkUrl(String url) {
@@ -95,30 +102,41 @@ public class MonitorService {
     }
   }
 
+  @Transactional
   public void updateWebsiteStatus(String id, Map<String, Object> result) {
-    Website w = websites.get(id);
-    if (w != null) {
+    Optional<Website> opt = repo.findById(id);
+    if (opt.isPresent()) {
+      Website w = opt.get();
       w.setLastStatus((String) result.get("status"));
       w.setLastStatusCode((Integer) result.get("statusCode"));
-      w.setLastLatency((Long) result.get("latency"));
+      Object lat = result.get("latency");
+      w.setLastLatency(lat instanceof Number ? ((Number) lat).longValue() : 0);
       w.setLastChecked((String) result.get("timestamp"));
+      repo.save(w);
     }
   }
 
   public Map<String, Object> checkWebsite(String id) {
-    Website w = websites.get(id);
-    if (w == null) return null;
+    Optional<Website> opt = repo.findById(id);
+    if (opt.isEmpty()) return null;
+    Website w = opt.get();
     Map<String, Object> result = checkUrl(w.getUrl());
     updateWebsiteStatus(id, result);
     return result;
   }
 
   @Scheduled(fixedRate = 300000)
+  @Transactional
   public void checkAllActive() {
-    for (Website w : websites.values()) {
+    for (Website w : repo.findAll()) {
       if (w.isActive()) {
         Map<String, Object> result = checkUrl(w.getUrl());
-        updateWebsiteStatus(w.getId(), result);
+        w.setLastStatus((String) result.get("status"));
+        w.setLastStatusCode((Integer) result.get("statusCode"));
+        Object lat = result.get("latency");
+        w.setLastLatency(lat instanceof Number ? ((Number) lat).longValue() : 0);
+        w.setLastChecked((String) result.get("timestamp"));
+        repo.save(w);
       }
     }
   }

@@ -1,13 +1,35 @@
 package com.pingmonitor.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "websites")
 public class Website {
+
+  @Id
+  @Column(length = 20)
   private String id;
+
+  @Column(nullable = false, length = 500)
   private String url;
+
+  @Column(nullable = false)
   private boolean active;
+
+  @Column(length = 10)
   private String lastStatus;
+
   private int lastStatusCode;
+
   private long lastLatency;
+
+  @Column(length = 30)
   private String lastChecked;
+
+  @Column(length = 30)
   private String addedAt;
 
   public Website() {}
