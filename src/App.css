@@ -1,0 +1,248 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0f0f1a;
+  color: #e0e0e0;
+  min-height: 100vh;
+}
+
+.dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.inactivity-banner {
+  background: #2a1f1f;
+  border: 1px solid #553333;
+  color: #ff9999;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.add-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  position: relative;
+}
+
+.add-form input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.65rem 1rem;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-form input:focus {
+  border-color: #5555ff;
+}
+
+.add-form input.input-error {
+  border-color: #ff5555;
+}
+
+.form-error {
+  position: absolute;
+  bottom: -1.3rem;
+  left: 0;
+  color: #ff5555;
+  font-size: 0.8rem;
+}
+
+.add-form button {
+  padding: 0.65rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #5555ff;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.add-form button:hover {
+  background: #4444dd;
+}
+
+.dashboard-actions {
+  margin-bottom: 1.5rem;
+}
+
+.btn-check-all {
+  padding: 0.5rem 1.2rem;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #1a1a2e;
+  color: #ccc;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-check-all:hover {
+  background: #222244;
+  border-color: #5555ff;
+  color: white;
+}
+
+.website-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.website-card {
+  background: #1a1a2e;
+  border: 1px solid #2a2a3e;
+  border-radius: 12px;
+  padding: 1.2rem;
+  transition: border-color 0.3s;
+}
+
+.website-card.status-up {
+  border-color: #1a4a2a;
+}
+
+.website-card.status-down {
+  border-color: #4a1a1a;
+}
+
+.website-card.status-unknown {
+  border-color: #2a2a3e;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.8rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #444;
+}
+
+.status-up .status-dot { background: #33cc33; box-shadow: 0 0 6px #33cc3366; }
+.status-down .status-dot { background: #ff4444; box-shadow: 0 0 6px #ff444466; }
+.status-unknown .status-dot { background: #666; }
+
+.card-url {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hostname {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.full-url {
+  font-size: 0.75rem;
+  color: #777;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-stats {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.stat-value.active { color: #33cc33; }
+.stat-value.paused { color: #999; }
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-actions button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: transparent;
+  color: #aaa;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-toggle:hover { border-color: #5555ff; color: #5555ff; }
+.btn-check:hover { border-color: #33cc33; color: #33cc33; }
+.btn-remove:hover { border-color: #ff4444; color: #ff4444; }
+.btn-check:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 500px) {
+  .dashboard { padding: 1.2rem 1rem; }
+  .card-stats { gap: 0.8rem; }
+  .card-actions { flex-wrap: wrap; }
+  .add-form input { min-width: 150px; }
+}
