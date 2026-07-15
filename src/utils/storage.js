@@ -1,12 +1,34 @@
 const WEBSITES_KEY = 'websites'
 const HISTORY_KEY = 'history'
 
+const DEFAULT_URLS = [
+  'https://musix-fh82.onrender.com',
+  'https://chat-in-terminal.onrender.com',
+  'https://comfortzone-b64p.onrender.com',
+  'https://cloudbucket.onrender.com',
+  'https://ecommerce-z4t5.onrender.com',
+  'https://coffeeconnect-y0vv.onrender.com',
+  'https://streaming-sikk.onrender.com',
+]
+
 export function getWebsites() {
   try {
+    const existing = localStorage.getItem(WEBSITES_KEY)
+    if (!existing) seedDefaults()
     return JSON.parse(localStorage.getItem(WEBSITES_KEY) || '[]')
   } catch {
     return []
   }
+}
+
+function seedDefaults() {
+  const websites = DEFAULT_URLS.map(url => ({
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    url,
+    active: true,
+    addedAt: new Date().toISOString(),
+  }))
+  localStorage.setItem(WEBSITES_KEY, JSON.stringify(websites))
 }
 
 export function setWebsites(websites) {
