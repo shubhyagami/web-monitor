@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ping Monitor</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+</head>
+<body>
+<div class="dashboard">
+  <header class="dashboard-header">
+    <h1>Ping Monitor</h1>
+    <p class="subtitle" id="subtitle">
+      <span th:if="${#lists.isEmpty(websites)}">Add a website to start monitoring</span>
+      <span th:unless="${#lists.isEmpty(websites)}" th:text="${upCount + '/' + #lists.size(websites) + ' websites up — auto-checks every 5 min'}"></span>
+    </p>
+  </header>
+
+  <div class="inactivity-banner" id="inactivity-banner">
+    You've been inactive for a while — monitoring paused. Interact to resume.
+  </div>
+
+  <form class="add-form" id="add-form">
+    <input type="text" id="url-input" placeholder="Enter website URL (e.g. example.com)" autocomplete="off">
+    <button type="submit">Add Website</button>
+    <div class="form-error" id="form-error"></div>
+  </form>
+
+  <div class="dashboard-actions" id="actions-bar" th:unless="${#lists.isEmpty(websites)}">
+    <button class="btn-check-all" id="btn-check-all">Check All Now</button>
+  </div>
+
+  <div class="website-grid" id="website-grid">
+    <div th:each="w : ${websites}" th:id="'card-' + ${w.id}" class="website-card"
+         th:classappend="${w.lastStatus != null ? (w.lastStatus == 'up' ? 'up' : 'down') : 'unknown'}"
+         th:attr="data-url=${w.url}, data-active=${w.active}, data-id=${w.id}">
+      <div class="card-header">
+        <div class="status-dot"></div>
+        <div class="card-url">
+          <span class="hostname" th:text="${#strings.replace(#strings.substringAfter(w.url, '://'), 'www.', '')}"></span>
+          <span class="full-url" th:text="${w.url}"></span>
+        </div>
+      </div>
+      <div class="card-stats">
+        <div class="stat" th:if="${w.lastStatusCode > 0}">
+          <span class="stat-label">Status</span>
+          <span class="stat-value" th:text="${w.lastStatusCode}"></span>
+        </div>
+        <div class="stat" th:if="${w.lastLatency > 0}">
+          <span class="stat-label">Latency</span>
+          <span class="stat-value" th:text="${w.lastLatency + 'ms'}"></span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Checked</span>
+          <span class="stat-value" th:text="${w.lastChecked != null ? #strings.substring(w.lastChecked, 0, 19) : 'never'}"></span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Wake-up</span>
+          <span class="stat-value" th:classappend="${w.active ? 'active' : 'paused'}" th:text="${w.active ? 'Active' : 'Paused'}"></span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="btn-toggle" th:attr="onclick='toggleWebsite(\'' + ${w.id} + '\')'" th:text="${w.active ? 'Pause' : 'Resume'}"></button>
+        <button class="btn-check" th:attr="onclick='checkWebsite(\'' + ${w.id} + '\')'">Check Now</button>
+        <button class="btn-remove" th:attr="onclick='removeWebsite(\'' + ${w.id} + '\')'">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" id="empty-state" th:if="${#lists.isEmpty(websites)}">
+    No websites being monitored. Add one above to get started.
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

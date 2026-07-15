@@ -12,7 +12,7 @@ body {
   color: #c0c0e0;
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 body::before {
@@ -70,7 +70,6 @@ body::after {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: none;
   filter: drop-shadow(0 0 20px rgba(255, 0, 128, 0.3));
 }
 
@@ -78,11 +77,11 @@ body::after {
   color: #8888aa;
   font-size: 0.85rem;
   margin-top: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
   letter-spacing: 0.05em;
 }
 
 .inactivity-banner {
+  display: none;
   background: linear-gradient(135deg, #1a0a1a, #2a0a1a);
   border: 1px solid #ff008055;
   color: #ff66aa;
@@ -92,6 +91,10 @@ body::after {
   margin-bottom: 1.5rem;
   text-align: center;
   box-shadow: 0 0 15px #ff008033, inset 0 0 15px #ff008011;
+}
+
+.inactivity-banner.visible {
+  display: block;
 }
 
 .add-form {
@@ -128,19 +131,18 @@ body::after {
   color: #444466;
 }
 
-.add-form input.input-error {
+.add-form input.error {
   border-color: #ff0080;
   box-shadow: 0 0 15px #ff008044;
 }
 
 .form-error {
-  position: absolute;
-  bottom: -1.3rem;
-  left: 50%;
-  transform: translateX(-50%);
   color: #ff0080;
   font-size: 0.75rem;
   text-shadow: 0 0 10px #ff008066;
+  text-align: center;
+  margin-top: 0.3rem;
+  width: 100%;
 }
 
 .add-form button {
@@ -219,25 +221,25 @@ body::after {
   transition: opacity 0.4s;
 }
 
-.website-card.status-up {
+.website-card.up {
   border-color: #00ff8844;
 }
 
-.website-card.status-up::before {
+.website-card.up::before {
   opacity: 1;
   background: linear-gradient(90deg, transparent, #00ff88, #00ffff, transparent);
 }
 
-.website-card.status-down {
+.website-card.down {
   border-color: #ff008044;
 }
 
-.website-card.status-down::before {
+.website-card.down::before {
   opacity: 1;
   background: linear-gradient(90deg, transparent, #ff0080, #ff4400, transparent);
 }
 
-.website-card.status-unknown {
+.website-card.unknown {
   border-color: #333366;
 }
 
@@ -251,24 +253,23 @@ body::after {
 .status-dot {
   width: 12px;
   height: 12px;
-  border-radius: 0;
   flex-shrink: 0;
   background: #333366;
   transition: all 0.4s;
 }
 
-.status-up .status-dot {
+.website-card.up .status-dot {
   background: #00ff88;
   box-shadow: 0 0 10px #00ff88aa, 0 0 25px #00ff8844;
 }
 
-.status-down .status-dot {
+.website-card.down .status-dot {
   background: #ff0080;
   box-shadow: 0 0 10px #ff0080aa, 0 0 25px #ff008044;
   animation: pulse 1.5s ease-in-out infinite;
 }
 
-.status-unknown .status-dot {
+.website-card.unknown .status-dot {
   background: #5555aa;
 }
 
@@ -297,7 +298,6 @@ body::after {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: 'JetBrains Mono', monospace;
 }
 
 .card-stats {
@@ -324,7 +324,6 @@ body::after {
   font-size: 0.9rem;
   font-weight: 500;
   color: #9999bb;
-  font-family: 'JetBrains Mono', monospace;
 }
 
 .stat-value.active { color: #00ff88; text-shadow: 0 0 10px #00ff8866; }
@@ -378,7 +377,6 @@ body::after {
   padding: 4rem 1rem;
   color: #444477;
   font-size: 0.9rem;
-  font-family: 'JetBrains Mono', monospace;
   position: relative;
 }
 
@@ -388,7 +386,6 @@ body::after {
   font-size: 3rem;
   margin-bottom: 1rem;
   color: #333366;
-  font-family: 'JetBrains Mono', monospace;
 }
 
 @media (max-width: 500px) {

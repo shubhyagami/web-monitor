@@ -1,6 +1,7 @@
-node_modules
-dist
-.vite
+target/
+*.class
+*.jar
 *.log
-.env
+.idea/
+*.iml
 .DS_Store
