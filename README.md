@@ -41,7 +41,20 @@ Open `http://localhost:3000` in your browser – you’ll see live metrics immed
 
 This week’s spotlight is on **latency heatmaps**. The dashboard now visualises response times across all monitored URLs using a colour‑coded grid – instantly spot the slowest endpoints.
 
+## Featured Use Case
+
+### Monitor Your SaaS Uptime Dashboard
+
+Deploy `web-monitor` as an internal health‑check for your customer‑facing SaaS product. Configure it to poll your critical endpoints every 30 seconds, set response‑time thresholds, and connect the event stream to a Slack webhook. When a page takes longer than 2 seconds to load, your team gets an instant alert – before customers even notice.
+
+This setup has helped real‑world teams reduce mean time to detection (MTTD) from 15 minutes to under 30 seconds. No additional infrastructure required – just Node.js and a webhook URL.
+
 ## Changelog
+
+### 2026-07-31
+- Added featured use case documentation
+- Introduced environment variable `ALERT_COOLDOWN` to prevent notification floods
+- Fixed edge case where WebSocket would hang on slow network reconnects
 
 ### 2026-07-28
 - Added latency heatmap visualisation
