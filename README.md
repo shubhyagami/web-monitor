@@ -68,79 +68,19 @@ This setup has helped real‑world teams reduce mean time to detection (MTTD) fr
               ┌──────────────────────┼──────────────────────┐
               ▼                      ▼                      ▼
        ┌────────────┐         ┌────────────┐         ┌────────────┐
-       │ Dashboard  │         │  Alerts    │         │   Logs     │
+       │ Dashboard  │         │  Alerts    │         │  Storage   │
        └────────────┘         └────────────┘         └────────────┘
 ```
 
-## Configuration Cheatsheet
-
-| Variable             | Default | Description                                      |
-|----------------------|---------|--------------------------------------------------|
-| `PORT`               | `3000`  | Port for the web dashboard                       |
-| `POLL_INTERVAL`      | `30s`   | Time between endpoint probes                     |
-| `ALERT_THRESHOLD_MS` | `2000`  | Response time that triggers an alert             |
-| `ALERT_COOLDOWN`     | `60s`   | Minimum gap between repeated alerts per endpoint |
-| `LOG_ROTATION`       | `false` | Enables rolling historical logs                  |
-| `THEME_PATH`         | `config/theme.json` | Path to custom theme file              |
-
-## API Hooks
-
-Drop a small module into `hooks/` and `web-monitor` will call it on every event:
-
-```js
-// hooks/slack-notify.js
-module.exports = async (event) => {
-  if (event.responseTime > 2000) {
-    await fetch(process.env.SLACK_WEBHOOK, {
-      method: 'POST',
-      body: JSON.stringify({ text: `🐢 Slow: ${event.url} (${event.responseTime}ms)` })
-    });
-  }
-};
-```
-
-## Project Stats
-
-- 📡 **Endpoints monitored per instance**: up to 5,000
-- ⚡ **Probe frequency**: as low as 1s with parallel workers
-- 🧠 **Memory footprint**: ~120MB idle, ~400MB under load
-- 🌍 **Zero external SaaS dependency** – runs entirely on your infrastructure
-
-## Roadmap
-
-- [x] Latency heatmap visualisation
-- [x] WebSocket auto‑reconnect hardening
-- [x] Alert cooldown to prevent notification floods
-- [ ] Multi‑tenant support with API keys
-- [ ] Prometheus exporter for native Grafana integration
-- [ ] Pluggable storage backends (Redis, PostgreSQL, S3)
-
-## Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change. Make sure tests pass with `npm test` and linting is clean with `npm run lint`.
-
-## Community
-
-- 💬 Discussions: [GitHub Discussions](https://github.com/shubhyagami/web-monitor/discussions)
-- 🐛 Issues: [GitHub Issues](https://github.com/shubhyagami/web-monitor/issues)
-- ⭐ Star the repo if `web-monitor` helps you sleep better at night
+---
 
 ## Changelog
 
-### 2026-07-31
-- Added featured use case documentation
-- Introduced environment variable `ALERT_COOLDOWN` to prevent notification floods
-- Fixed edge case where WebSocket would hang on slow network reconnects
+### v2.5.0 – 2026-08-02
 
-### 2026-07-28
-- Added latency heatmap visualisation
-- Improved WebSocket reconnection logic
-- Updated dependencies to latest stable versions
-
-## Motivational Quote
-
-> "Monitoring is not about finding problems – it's about proving that everything is working perfectly. And when it isn't, knowing exactly where to look."
-
----
-
-Built with ❤️ by [shubhyagami](https://github.com/shubhyagami)
+- **Latency heatmaps** now include a timeline slider to scrub through historical data.
+- Added **custom webhook templates** – format alert payloads for Slack, Discord, or PagerDuty.
+- Introduced **health check endpoint** (`/health`) for easy integration with uptime monitors.
+- Fixed edge case where probes would hang on DNS timeouts.
+- Upgraded WebSocket library to v8.2 – improved reconnection logic and reduced memory leaks.
+- Deprecated Node.js 14 support; minimum required version is now Node 16 LTS.
