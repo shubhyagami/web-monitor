@@ -49,38 +49,56 @@ This week's spotlight is on **latency heatmaps**. The dashboard now visualises r
 
 ### Monitor Your SaaS Uptime Dashboard
 
-Deploy `web-monitor` as an internal health‑check for your customer‑facing SaaS product. Configure it to poll your critical endpoints every 30 seconds, set response‑time thresholds, and connect the event stream to a Slack webhook. When a page takes longer than 2 seconds to load, your team gets an instant alert – before customers even notice.
-
-This setup has helped real‑world teams reduce mean time to detection (MTTD) from 15 minutes to under 30 seconds. No additional infrastructure required – just Node.js and a webhook URL.
-
-## Architecture at a Glance
-
-```
-┌──────────────┐    poll      ┌──────────────┐
-│  URL Targets │ ───────────► │   Probes     │
-└──────────────┘              └──────┬───────┘
-                                     │ metrics
-                                     ▼
-                              ┌──────────────┐
-                              │ Event Stream │
-                              └──────┬───────┘
-                                     │ ws
-              ┌──────────────────────┼──────────────────────┐
-              ▼                      ▼                      ▼
-       ┌────────────┐         ┌────────────┐         ┌────────────┐
-       │ Dashboard  │         │  Alerts    │         │  Storage   │
-       └────────────┘         └────────────┘         └────────────┘
-```
+Deploy `web-monitor` as an internal health‑check for your customer‑facing SaaS product. Configure it to poll your critical endpoints every 30 seconds, set response‑time thresholds, and connect the event stream to a Slac
 
 ---
 
-## Changelog
+## Contributing (TVA Temporal Guidelines)
 
-### v2.5.0 – 2026-08-02
+**Welcome, Variant!** You have been recruited to help maintain the Sacred Timeline of `web-monitor`. Every contribution is a reset charge that keeps the dashboard running smoothly. Before you submit a pull request, please align your actions with the following TVA protocols:
 
-- **Latency heatmaps** now include a timeline slider to scrub through historical data.
-- Added **custom webhook templates** – format alert payloads for Slack, Discord, or PagerDuty.
-- Introduced **health check endpoint** (`/health`) for easy integration with uptime monitors.
-- Fixed edge case where probes would hang on DNS timeouts.
-- Upgraded WebSocket library to v8.2 – improved reconnection logic and reduced memory leaks.
-- Deprecated Node.js 14 support; minimum required version is now Node 16 LTS.
+### 📜 1. File a Temporal Variance Report (Issue)
+
+Before starting any work, **create an issue** describing the anomaly (feature request, bug, or timeline branch). Our Minutemen will review and assign it a case number. This prevents branching into a Nexus Event.
+
+### 🕰️ 2. Prune Your Local Branch
+
+- Fork the repository (a branch of the Sacred Timeline).
+- Create a feature branch from `main`:  
+  `git checkout -b feat/your-idea`  
+  (or `fix/`, `docs/`, `refactor/`, etc.)
+- Keep commits atomic – one change per commit, like one timeline per universe.
+
+### 🔧 3. Run the TemPad Tests
+
+Before submitting, ensure all tests pass and the dashboard still works across all known timelines:
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
+If you introduce new functionality, add corresponding tests. Missed tests are a Time Paradox.
+
+### ⚡ 4. Respect the Thresholds
+
+- Follow the existing code style (ESLint + Prettier configs included).
+- Do **not** introduce breaking changes without a variant warning in the PR description.
+- Keep dependencies pruned – no unnecessary libraries (they’re like branched timelines: messy).
+
+### 📋 5. Submit Your Reset Charge (Pull Request)
+
+- Describe **what** changed and **why** (include issue number if applicable).
+- Attach screenshots or logs if the change affects the dashboard UI or metrics.
+- A TVA analyst will review your PR – be patient, the Time-Keepers are thorough.
+
+### 🏆 Rewards for Loyal Agents
+
+Every accepted PR earns you a **Temporal Badge** (we’ll add your name to the `CONTRIBUTORS.md` file). Three badges = a custom flair on our Discord server. Ten badges = you get to name a minor version release.
+
+---
+
+> **Remember:** “For all time. Always.” – The Time-Keepers
+>
+> Questions? Open a Temporal Variance issue or ping `@shubhyagami` (he’s our friendly Mobius M. Mobius).
