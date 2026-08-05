@@ -49,9 +49,23 @@ This week's spotlight is on **latency heatmaps**. The dashboard now visualises r
 
 ### Monitor Your SaaS Uptime Dashboard
 
-Deploy `web-monitor` as an internal health‑check for your customer‑facing SaaS product. Configure it to poll your critical endpoints every 30 seconds, set response‑time thresholds, and connect the event stream to a Slac
+Deploy `web-monitor` as an internal health‑check for your customer‑facing SaaS product. Configure it to poll your critical endpoints every 30 seconds, set response‑time thresholds, and connect the event stream to a Slack webhook – so your team gets alerted the moment a page starts to degrade. With the new latency heatmaps, you can also see at a glance which regions are experiencing slowdowns, helping you pinpoint infrastructure issues before they impact users.
 
----
+## What’s New (Changelog)
+
+### 2026-08-06 — Version 2.4.1 “Temporal Stabilisation Patch”
+
+- **Latency heatmaps** are now interactive – hover over any cell to see exact response time, timestamp, and HTTP status code.
+- **Environment variable expansion** – you can now use `$VAR` syntax in `theme.json` for dynamic secrets (e.g., API keys).
+- **Fixed** an issue where the dashboard would occasionally miss updates during daylight saving time transitions. Time is now truly linear.
+- **Added** a new motivational quote to the dashboard footer (see below – because even a monitor needs encouragement).
+
+> *“Time is not a straight line. It’s a big ball of wibbly‑wobbly… timey‑wimey… stuff.”* — The Doctor  
+> *“But our monitors? They keep it steady.”* — TVA Engineering
+
+## Motivational Quote
+
+> *“In the vast multiverse of web endpoints, your monitor is the one constant. Keep watching. Keep measuring. You are the Timekeeper of uptime.”*
 
 ## Contributing (TVA Temporal Guidelines)
 
@@ -71,34 +85,16 @@ Before starting any work, **create an issue** describing the anomaly (feature re
 
 ### 🔧 3. Run the TemPad Tests
 
-Before submitting, ensure all tests pass and the dashboard still works across all known timelines:
+Before submitting, ensure all tests pass and the dashboard still works across all known timelines (Node 18, 20, and 22). Run:
 
 ```bash
 npm test
-npm run lint
-npm run build
 ```
 
-If you introduce new functionality, add corresponding tests. Missed tests are a Time Paradox.
+### 🚀 4. Submit a Pull Request
 
-### ⚡ 4. Respect the Thresholds
-
-- Follow the existing code style (ESLint + Prettier configs included).
-- Do **not** introduce breaking changes without a variant warning in the PR description.
-- Keep dependencies pruned – no unnecessary libraries (they’re like branched timelines: messy).
-
-### 📋 5. Submit Your Reset Charge (Pull Request)
-
-- Describe **what** changed and **why** (include issue number if applicable).
-- Attach screenshots or logs if the change affects the dashboard UI or metrics.
-- A TVA analyst will review your PR – be patient, the Time-Keepers are thorough.
-
-### 🏆 Rewards for Loyal Agents
-
-Every accepted PR earns you a **Temporal Badge** (we’ll add your name to the `CONTRIBUTORS.md` file). Three badges = a custom flair on our Discord server. Ten badges = you get to name a minor version release.
+Open a PR against the `main` branch with a clear description of your changes. Our Time‑Keepers will review it and, if approved, merge it into the Sacred Timeline.
 
 ---
 
-> **Remember:** “For all time. Always.” – The Time-Keepers
->
-> Questions? Open a Temporal Variance issue or ping `@shubhyagami` (he’s our friendly Mobius M. Mobius).
+*May your response times be low and your uptime high.*
