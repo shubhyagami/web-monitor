@@ -11,7 +11,7 @@ A lightweight, real-time web monitoring dashboard built with JavaScript and Node
 ## Features
 
 - **Real-time Dashboard:** Live metrics for all monitored URLs.
-- **Latency Heatmaps:** Interactive color-coded grid to instantly spot slow endpoints.
+- **Latency Heatmaps:** Interactive color-coded grid to spot slow endpoints instantly. Hover over any cell to see the exact response time, timestamp, and HTTP status code.
 - **Custom Alerts:** Integrate with Slack or email to receive notifications when response times exceed defined thresholds.
 - **Theming Support:** Customize dashboard colors and layout by dropping a `theme.json` file into the `config/` directory.
 - **Log Rotation:** Keep historical data manageable by enabling `LOG_ROTATION=true` in your environment.
@@ -25,7 +25,7 @@ A lightweight, real-time web monitoring dashboard built with JavaScript and Node
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository and navigate into the directory:
    ```bash
    git clone https://github.com/shubhyagami/web-monitor.git
    cd web-monitor
@@ -41,15 +41,15 @@ A lightweight, real-time web monitoring dashboard built with JavaScript and Node
    npm run dev
    ```
 
-4. Open `http://localhost:3000` in your browser to view live metrics immediately.
+4. Open `http://localhost:3000` in your browser to view live metrics.
 
-## Usage Example: SaaS Uptime Monitoring
+## Example Usage
 
-Deploy `web-monitor` as an internal health-check for your customer-facing SaaS product. Configure it to poll your critical endpoints every 30 seconds, set response-time thresholds, and connect the event stream to a Slack webhook. Your team gets alerted the moment a page starts to degrade, while the latency heatmaps help pinpoint which regions are experiencing slowdowns before they impact users.
+Deploy `web-monitor` as an internal health-check for your customer-facing SaaS product. Configure it to poll critical endpoints every 30 seconds, set response-time thresholds, and connect the event stream to a Slack webhook. Your team gets alerted the moment a page starts to degrade, while the latency heatmaps help pinpoint which regions are experiencing slowdowns before they impact users.
 
 ## Tips
 
-- **Dynamic Secrets:** Use `$VAR` syntax in `theme.json` to safely reference environment variables for API keys.
+- **Dynamic Secrets:** Use `$VAR` syntax in `theme.json` to safely reference environment variables for API keys or tokens.
 - **Historical Data:** Enable `LOG_ROTATION=true` in your environment to automatically prune old logs and keep data storage lean.
 
 ## Changelog
