@@ -1,29 +1,24 @@
 # web-monitor
 
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-blue)
 ![Version](https://img.shields.io/badge/version-2.4.1-blueviolet)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![License](https://img.shields.io/badge/license-MIT-blue)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange)
 
-A lightweight, real-time web monitoring dashboard built with JavaScript and Node.js. It tracks endpoint uptime, visualizes response times via latency heatmaps, and sends alerts to keep you informed of degradations.
+A lightweight, real-time web monitoring dashboard built with Node.js. `web-monitor` tracks endpoint uptime, visualizes response times via latency heatmaps, and sends alerts to keep you informed of performance degradations.
 
 ## Features
 
 - **Real-time Dashboard:** Live metrics for all monitored URLs.
-- **Latency Heatmaps:** Interactive color-coded grid to spot slow endpoints instantly. Hover over any cell to see the exact response time, timestamp, and HTTP status code.
+- **Latency Heatmaps:** Interactive, color-coded grids to spot slow endpoints instantly. Hover over any cell to see the exact response time, timestamp, and HTTP status code.
 - **Custom Alerts:** Integrate with Slack or email to receive notifications when response times exceed defined thresholds.
 - **Theming Support:** Customize dashboard colors and layout by dropping a `theme.json` file into the `config/` directory.
 - **Log Rotation:** Keep historical data manageable by enabling `LOG_ROTATION=true` in your environment.
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js (v18, v20, or v22)
-- npm
-
-### Installation
+Ensure you have Node.js (v18, v20, or v22) and npm installed on your system.
 
 1. Clone the repository and navigate into the directory:
    ```bash
@@ -41,7 +36,7 @@ A lightweight, real-time web monitoring dashboard built with JavaScript and Node
    npm run dev
    ```
 
-4. Open `http://localhost:3000` in your browser to view live metrics.
+4. Open `http://localhost:3000` in your browser to view the live metrics dashboard.
 
 ## Example Usage
 
