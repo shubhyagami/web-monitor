@@ -11,8 +11,8 @@ A lightweight, real-time web monitoring dashboard built with Node.js. `web-monit
 ## Features
 
 - **Real-time Dashboard:** Live metrics for all monitored URLs.
-- **Latency Heatmaps:** Interactive, color-coded grids to spot slow endpoints instantly. Hover over any cell to see the exact response time, timestamp, and HTTP status code.
-- **Custom Alerts:** Integrate with Slack or email to receive notifications when response times exceed defined thresholds.
+- **Latency Heatmaps:** Interactive, color-coded grids to spot slow endpoints instantly. Hover over any cell to view the exact response time, timestamp, and HTTP status code.
+- **Custom Alerts:** Integrate with Slack or email to receive notifications when response times exceed your defined thresholds.
 - **Theming Support:** Customize dashboard colors and layout by dropping a `theme.json` file into the `config/` directory.
 - **Log Rotation:** Keep historical data manageable by enabling `LOG_ROTATION=true` in your environment.
 
@@ -45,7 +45,7 @@ Deploy `web-monitor` as an internal health-check for your customer-facing SaaS p
 ## Tips
 
 - **Dynamic Secrets:** Use `$VAR` syntax in `theme.json` to safely reference environment variables for API keys or tokens.
-- **Historical Data:** Enable `LOG_ROTATION=true` in your environment to automatically prune old logs and keep data storage lean.
+- **Historical Data:** Enable `LOG_ROTATION=true` to automatically prune old logs and keep data storage lean.
 
 ## Changelog
 
