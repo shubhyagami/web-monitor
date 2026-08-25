@@ -7,7 +7,7 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange)
 ![Maintained by](https://img.shields.io/badge/Maintained_by-shubhyagami-blue)
 
-A real-time web monitoring dashboard built with Node.js. Monitor your application's performance, track endpoint uptime, visualize response times, and set custom alerts for performance degradations.
+A real-time web monitoring dashboard built with Node.js to monitor your application's performance, track endpoint uptime, visualize response times, and set custom alerts for performance degradations.
 
 ## Features
 
@@ -36,21 +36,14 @@ To start monitoring your application, follow these steps:
     ```
 4.  Open `http://localhost:3000` in your browser to view the live metrics dashboard.
 
+## Quick Tips and Best Practices
+
+*   Use dynamic secrets in `theme.json` by referencing environment variables with `$VAR` syntax.
+*   Enable log rotation by setting `LOG_ROTATION=true` to automatically prune old logs and keep data storage lean.
+
 ## Example Usage
 
-Deploy `web-monitor` as an internal health-check for your customer-facing SaaS product. Configure it to poll critical endpoints every 30 seconds, set response-time thresholds, and connect the event stream to a Slack webhook.
-
-## Tips
-
-*   **Dynamic Secrets:** Use `$VAR` syntax in `theme.json` to safely reference environment variables for API keys or tokens.
-*   **Historical Data:** Enable `LOG_ROTATION=true` to automatically prune old logs and keep data storage lean.
-
-## Changelog
-
-*   **v2.4.1 (2026-08-06):**
-    *   **Interactive Latency Heatmaps:** Hover over any cell to see exact response time, timestamp, and HTTP status code.
-    *   **Environment Variable Expansion:** Added support for `$VAR` syntax in `theme.json`.
-    *   **Bugfix:** Fixed an issue where the dashboard would occasionally miss updates during daylight saving time transitions.
+Imagine deploying `web-monitor` as an internal health-check for your customer-facing SaaS product. Configure it to poll critical endpoints every 30 seconds, set response-time thresholds, and connect the event stream to a Slack webhook.
 
 ## Contributing
 
@@ -66,4 +59,4 @@ Contributions are welcome! Before opening a pull request, please follow these st
 
 ---
 
-*May your response times be low and your uptime high.*
+May your response times be low and your uptime high.
