@@ -1,8 +1,8 @@
 # web-monitor
 
-A lightweight, real‑time dashboard for monitoring web application performance. It tracks endpoint uptime, response times, and can trigger custom alerts when thresholds are crossed.
+A lightweight, real‑time dashboard for monitoring web application performance. It watches endpoint uptime and response times, and can trigger custom alerts when thresholds are crossed.
 
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![Contributions](https://img.shields.io/badge/PRs-welcome-orange)
 ![Maintained by](https://img.shields.io/badge/Maintained%20by-shubhyagami-blue)
