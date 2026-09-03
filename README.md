@@ -4,139 +4,54 @@ A lightweight, real‑time dashboard for monitoring web‑application performanc
 It polls configured HTTP endpoints, records uptime and response times, visualises data, and can trigger alerts when thresholds are exceeded.
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)  
-![License](https://img.shields.io/badge/license-MIT-blue)  
-![Build](https://github.com/shubhyagami/web-monitor/actions/workflows/ci.yml/badge.svg?branch=main)  
-![PRs welcome](https://img.shields.io/badge/PRs-welcome-orange)  
+![MIT License](https://img.shields.io/badge/license-MIT-blue)  
+![CI](https://github.com/shubhyagami/web-monitor/actions/workflows/ci.yml/badge.svg?branch=main)  
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-orange)
 
 ---
 
-## Quick Start
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Node.js** ≥ 18  
+- **npm** (or **Yarn**)  
+
+### Install
 
 ```bash
 git clone https://github.com/shubhyagami/web-monitor.git
 cd web-monitor
-npm install
-# copy the example env
+npm install          # or yarn install
+```
+
+### Configure
+
+Create a `.env` file at the root. A template is provided as `.env.example`.
+
+```bash
 cp .env.example .env
-# edit .env to set your poll interval, alerts, etc.
-npm run dev   # or npm start for production
+# Edit the file to set the values you need
 ```
 
-Open <http://localhost:3000> to view the dashboard.
+#### Environment variables
 
----
+| Variable           | Default   | Purpose                                                  |
+|--------------------|-----------|----------------------------------------------------------|
+| `POLL_INTERVAL_MS`| `30000`   | Frequency of polling in milliseconds                    |
+| `SLACK_WEBHOOK`    | `""`      | Incoming Slack webhook URL                               |
+| `ALERT_THRESHOLD_MS` | `1200` | Alert threshold (ms) that triggers notifications        |
+| `LOG_ROTATION`     | `false`   | `true` enables automatic deletion of old logs             |
+| `SMTP_HOST`        | `""`      | SMTP host for e‑mail alerts                              |
+| `SMTP_PORT`        | `587`     | SMTP port                                                |
+| `SMTP_USER`        | `""`      | SMTP username                                            |
+| `SMTP_PASS`        | `""`      | SMTP password                                            |
 
-## Table of contents
+Only one alert channel is required – leaving the SMTP fields empty disables e‑mail notifications.
 
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Configuration](#configuration)
-  - [Environment variables](#environment-variables)
-  - [Theme file](#theme-file)
-- [Usage](#usage)
-  - [Dashboard](#dashboard)
-  - [Alerting](#alerting)
-  - [Log rotation](#log-rotation)
-- [Development](#development)
-  - [Prerequisites](#prerequisites)
-  - [Running tests](#running-tests)
-  - [Linting & formatting](#linting--formatting)
-- [Contributing](#contributing)
-- [Changelog](#changelog)
-- [License](#license)
+#### Theme file
 
----
-
-## Overview
-
-`web‑monitor` runs as a Node.js (≥18) process and performs the following:
-
-1. **Polling**: Hits every URL listed in `config/endpoints.json` at a configurable interval.
-2. **Metrics storage**: Keeps raw metrics in an in‑memory array (extendable to Redis or a file later).
-3. **Dashboard**: Serves a responsive web UI on `localhost:3000` that updates automatically.
-4. **Customization**: Appearance can be tuned via `config/theme.json`.
-5. **Alerting**: Sends Slack messages or e‑mail if a response time exceeds `ALERT_THRESHOLD_MS`.
-6. **Log pruning**: Optionally removes old log entries to keep the data set manageable.
-
----
-
-## Features
-
-- **Live dashboard** – real‑time view of all monitored URLs.  
-- **Heatmap visualisation** – colour‑coded latency grid with hover tool‑tips.  
-- **Alerting** – Slack webhook or SMTP e‑mail; thresholds configurable.  
-- **Themeable** – JSON theme with support for environment variable interpolation (`$VAR`).  
-- **Log rotation** – toggle‑based pruning of old log entries.  
-- **Cross‑platform** – works on Windows, macOS, and Linux.  
-
----
-
-## Architecture
-
-```
-┌───────────────────────┐
-│  config/              │
-│  ├─ theme.json        │
-│  └─ endpoints.json   │
-├───────────────────────┤
-│  src/                 │
-│  ├─ server.js         │
-│  ├─ dashboard.js      │
-│  ├─ poller.js         │
-│  └─ alerts.js         │
-├───────────────────────┤
-│  public/              │
-│  └─ static assets      │
-├───────────────────────┤
-│  .env (optional)     │
-└───────────────────────┘
-```
-
-- `poller.js` performs the HTTP requests and records metrics.  
-- `alerts.js` evaluates thresholds and triggers notifications.  
-- `dashboard.js` serves the UI and pushes data to the browser via WebSocket.  
-
----
-
-## Installation
-
-```bash
-# 1️⃣ Clone the repository
-git clone https://github.com/shubhyagami/web-monitor.git
-cd web-monitor
-
-# 2️⃣ Install dependencies
-npm install
-```
-
-If you use Yarn, replace `npm install` with `yarn install`.
-
----
-
-## Configuration
-
-Create a `.env` file in the root of the project. A template is provided in `.env.example`.
-
-### Environment variables
-
-| Variable            | Default  | Purpose |
-|----------------------|----------|--------|
-| `POLL_INTERVAL_MS`  | `30000`  | Polling frequency in milliseconds. |
-| `SLACK_WEBHOOK`     | `""`     | Incoming Slack webhook URL. |
-| `ALERT_THRESHOLD_MS` | `1200`  | Response time (ms) that triggers an alert. |
-| `LOG_ROTATION`      | `false`  | `true` enables automatic deletion of old logs. |
-| `SMTP_HOST`         | `""`     | Optional SMTP host for e‑mail alerts. |
-| `SMTP_PORT`         | `587`    | Optional SMTP port. |
-| `SMTP_USER`         | `""`     | Optional SMTP username. |
-| `SMTP_PASS`         | `""`     | Optional SMTP password. |
-
-Only one alert channel is required – leaving the SMTP fields empty will disable e‑mail notifications.
-
-### Theme file
-
-`config/theme.json` overrides the default dashboard appearance. Environment variables can be referenced with `${VAR}` syntax. Example:
+Place a `theme.json` in `config/` alongside `endpoints.json`. The JSON supports environment variable interpolation via `${VAR}`.
 
 ```json
 {
@@ -146,28 +61,32 @@ Only one alert channel is required – leaving the SMTP fields empty will disabl
 }
 ```
 
-Place this file in the same directory as `endpoints.json`.
-
 ---
 
-## Usage
+## 📦 Usage
+
+Run the application in development mode (hot reload) or in production:
+
+```bash
+npm run dev   # development
+# or
+npm start     # production
+```
+
+Open <http://localhost:3000> to view the live dashboard. The page updates automatically every `POLL_INTERVAL_MS` milliseconds.
 
 ### Dashboard
 
-```bash
-npm run dev   # development (hot reload)
-# or
-npm start      # production
-```
-
-Open <http://localhost:3000> to see live metrics. The page refreshes automatically every `POLL_INTERVAL_MS` milliseconds.
+* Real‑time view of all monitored URLs  
+* Heatmap visualisation of latency grid with hover‑tooltips  
+* Configurable via environment variables and `theme.json`
 
 ### Alerting
 
 When a response time exceeds `ALERT_THRESHOLD_MS`, the application:
 
 1. Posts a message to the configured Slack webhook.  
-2. Sends an e‑mail using the SMTP settings if provided.
+2. Sends an e‑mail using the provided SMTP settings (if configured).
 
 Typical Slack payload:
 
@@ -177,16 +96,34 @@ Typical Slack payload:
 
 ### Log rotation
 
-Set `LOG_ROTATION=true` in your `.env` file. Logs older than the retention period are removed automatically every hour.
+Set `LOG_ROTATION=true` in your `.env`. Logs older than the retention period are purged automatically every hour.
 
 ---
 
-## Development
+## 📐 Architecture
 
-### Prerequisites
+```
+├─ config/
+│  ├─ endpoints.json
+│  └─ theme.json
+├─ public/
+│  └─ static assets
+├─ src/
+│  ├─ server.js      # Express/WebSocket server
+│  ├─ poller.js      # HTTP polling logic
+│  ├─ alerts.js      # Threshold evaluation & notification
+│  └─ dashboard.js   # UI service
+├─ .env              # Optional, overrides defaults
+└─ package.json
+```
 
-- Node.js 18 or newer  
-- npm or Yarn
+* `poller.js` performs the HTTP requests and records metrics in memory.  
+* `alerts.js` evaluates thresholds and triggers notifications.  
+* `dashboard.js` streams data to the browser via WebSocket.
+
+---
+
+## 🛠️ Development
 
 ### Running tests
 
@@ -194,38 +131,38 @@ Set `LOG_ROTATION=true` in your `.env` file. Logs older than the retention perio
 npm test
 ```
 
-Tests are written with Jest and cover polling logic, alert evaluation, and API routes.
+Tests are written in Jest and cover polling, alerting, and API routes.
 
-### Linting & formatting
+### Linting & Formatting
 
 ```bash
-npm run lint   # ESLint
-npm run format # Prettier
+npm run lint     # ESLint
+npm run format   # Prettier
 ```
 
-Run both before creating a pull request.
+Run both before submitting a pull request.
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository.  
 2. Create a feature branch: `git checkout -b feat/your-feature`.  
-3. Run tests: `npm test`.  
-4. Commit your changes with a descriptive message.  
-5. Push: `git push -u origin feat/your-feature`.  
-6. Open a PR – describe the issue and the solution.
+3. Run the tests: `npm test`.  
+4. Commit with a clear, descriptive message.  
+5. Push and open a pull request.  
+6. Follow linting rules – code style must match the repo’s configuration.
 
-All contributors must follow the linting rules and keep the code style consistent.
+All contributions are welcome – just keep the code clean and tests passing.
 
 ---
 
-## Changelog
+## 🗒️ Changelog
 
 **v2.4.1** – 2026‑07‑14  
 - Added log rotation toggle.  
 - Improved heatmap responsiveness.  
-- Fixed parsing of theme variables.
+- Fixed theme variable parsing.
 
 **v2.3.0** – 2026‑05‑02  
 - Introduced Slack alert support.  
@@ -233,6 +170,6 @@ All contributors must follow the linting rules and keep the code style consisten
 
 ---
 
-## License
+## 📄 License
 
 MIT © [shubhyagami](https://github.com/shubhyagami)
