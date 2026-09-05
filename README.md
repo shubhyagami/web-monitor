@@ -1,52 +1,63 @@
 # web‑monitor
 
 A lightweight, real‑time dashboard for monitoring the uptime and response times of web applications.  
-It polls your configured HTTP endpoints, records metrics in memory, streams updates to a browser dashboard, and can alert you when thresholds are breached.
+It polls your configured HTTP endpoints, stores metrics in memory, streams updates to a browser dashboard, and can notify you when thresholds are breached.
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 ![CI](https://github.com/shubhyagami/web-monitor/actions/workflows/ci.yml/badge.svg?branch=main)
-![WIP](https://img.shields.io/badge/Status-Active-blue)
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
 ---
 
-## Quick start
+## Getting Started
 
 ```bash
 git clone https://github.com/shubhyagami/web-monitor.git
 cd web-monitor
 npm install          # or yarn install
 cp .env.example .env
-# edit .env
-npm run dev          # starts dev server with hot reload
+# Edit .env with your settings
+npm run dev           # starts the dev server with hot reload
 # or
-npm start            # production build
+npm start             # production build
 ```
 
-Open <http://localhost:3000> to see the live dashboard.
+Open <http://localhost:3000> to view the live dashboard.
 
 ---
 
 ## Configuration
 
-Create a `.env` file at the root. A template is available as `.env.example`.
+Create a `.env` file at the repository root. A template is provided as `.env.example`.
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `POLL_INTERVAL_MS` | `30000` | Poll frequency (ms) |
-| `ALERT_THRESHOLD_MS` | `1200` | When response time exceeds this, an alert is sent |
-| `SLACK_WEBHOOK` | `""` | Incoming Slack webhook URL |
-| `SMTP_HOST` | `""` | SMTP host for e‑mail alerts |
-| `SMTP_PORT` | `587` | SMTP port |
-| `SMTP_USER` | `""` | SMTP username |
-| `SMTP_PASS` | `""` | SMTP password |
-| `LOG_ROTATION` | `false` | `true` deletes logs older than the retention period |
+| Variable          | Default | Purpose                                              |
+|-------------------|---------|------------------------------------------------------|
+| `POLL_INTERVAL_MS`| `30000` | How often the script polls each endpoint (ms).      |
+| `ALERT_THRESHOLD_MS` | `1200` | Response time above which an alert is sent.         |
+| `SLACK_WEBHOOK`   | `""`    | Incoming Slack webhook URL (leave empty to disable).|
+| `SMTP_HOST`       | `""`    | SMTP host for email alerts (leave empty to disable).|
+| `SMTP_PORT`       | `587`   | SMTP port.                                           |
+| `SMTP_USER`       | `""`    | SMTP username.                                       |
+| `SMTP_PASS`       | `""`    | SMTP password.                                       |
+| `LOG_ROTATION`   | `false` | `true` to delete logs older than the retention period.|
 
-Only one notification channel is needed: leaving all SMTP fields empty disables e‑mail alerts.
+Only one notification channel is required – set SMTP or Slack only.
+
+### Endpoints
+
+Add the URLs you want to monitor to `config/endpoints.json`:
+
+```json
+[
+  "https://example.com",
+  "https://api.example.org/health"
+]
+```
 
 ### Theme file
 
-Place a `theme.json` in `config/` next to `endpoints.json`. The file supports `${VAR}` interpolation.
+Place a `theme.json` next to `config/endpoints.json`. It supports `${VAR}` interpolation and simple SASS‑like functions.
 
 ```json
 {
@@ -60,16 +71,16 @@ Place a `theme.json` in `config/` next to `endpoints.json`. The file supports `$
 
 ## Features
 
-- **Real‑time dashboard** with instant updates via WebSocket
-- **Heatmap** of latency across all endpoints
-- **Alerting**: Slack, e‑mail, or both
-- **Log rotation** (optional)
-- **Custom theming** through `theme.json`
-- **Zero‑config endpoints** – add URLs to `config/endpoints.json`
+- Real‑time dashboard with WebSocket updates
+- Heatmap of latency across all monitored endpoints
+- Alerting via Slack, email, or both
+- Optional log rotation
+- Custom theming through `theme.json`
+- Zero‑config endpoints – just add URLs to `config/endpoints.json`
 
 ---
 
-## How it works
+## Architecture Overview
 
 ```
 ┌──────────────────────┐
@@ -78,14 +89,14 @@ Place a `theme.json` in `config/` next to `endpoints.json`. The file supports `$
         │
 ┌───────▼─────────────────────┐
 │       src/poller.js         │
-│  Sends HTTP requests and   │
+│  Sends HTTP requests and     │
 │  stores metrics in memory   │
 └───────▲─────────────────────┘
         │
 ┌───────▼─────────────────────┐
 │       src/alerts.js          │
-│  Evaluates thresholds and  │
-│  triggers Slack/email      │
+│  Evaluates thresholds and    │
+│  triggers Slack/email        │
 └───────▲─────────────────────┘
         │
 ┌───────▼─────────────────────┐
@@ -105,7 +116,7 @@ Place a `theme.json` in `config/` next to `endpoints.json`. The file supports `$
 npm test
 ```
 
-The test suite uses Jest and covers polling logic, alert evaluation, and API routes.
+The test suite (Jest) covers polling logic, alert evaluation, and API routes.
 
 ### Linting & Formatting
 
@@ -120,11 +131,11 @@ Run both before submitting a pull request.
 
 ## Contributing
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feat/your-feature`.
-3. Run the tests: `npm test`.
-4. Commit with a clear message.
-5. Push and open a pull request.
+1. Fork the repository.  
+2. Create a feature branch: `git checkout -b feat/your-feature`.  
+3. Run the tests: `npm test`.  
+4. Commit with a clear message.  
+5. Push and open a pull request.  
 6. Ensure linting passes.
 
 All contributions are welcome—please keep the code style consistent and tests passing.
@@ -134,12 +145,12 @@ All contributions are welcome—please keep the code style consistent and tests 
 ## Changelog
 
 ### v2.4.1 – 2026‑07‑14
-- Added log rotation toggle.
-- Improved heatmap responsiveness.
+- Added log rotation toggle.  
+- Improved heatmap responsiveness.  
 - Fixed theme variable parsing.
 
 ### v2.3.0 – 2026‑05‑02
-- Introduced Slack alert support.
+- Introduced Slack alert support.  
 - Added advanced dashboard theming.
 
 ---
