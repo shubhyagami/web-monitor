@@ -1,16 +1,15 @@
 # web‑monitor
 
-A lightweight dashboard for real‑time monitoring of web‑application uptime and latency.  
-It polls HTTP endpoints, keeps metrics in memory, streams updates to a browser, and
-sends alerts when thresholds are exceeded.
+web‑monitor is a lightweight, real‑time dashboard for monitoring uptime and latency of web applications.  
+It polls configured HTTP endpoints, keeps metrics in memory, streams updates to a browser with WebSocket, and triggers alerts when thresholds are exceeded.
 
-![](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)
-![](https://img.shields.io/github/v/tag/shubhyagami/web-monitor?label=version)
-![](https://github.com/shubhyagami/web-monitor/actions/workflows/ci.yml/badge.svg?branch=main)
-![](https://img.shields.io/badge/license-MIT-blue)
-![](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)  
+![Version](https://img.shields.io/github/v/tag/shubhyagami/web-monitor?label=version)  
+![CI](https://github.com/shubhyagami/web-monitor/actions/workflows/ci.yml/badge.svg?branch=main)  
+![License](https://img.shields.io/badge/license-MIT-blue)  
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
---- 
+---
 
 ## Table of contents
 
@@ -29,56 +28,56 @@ sends alerts when thresholds are exceeded.
 - [Changelog](#changelog)
 - [License](#license)
 
---- 
+---
 
 ## Getting started
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/shubhyagami/web-monitor.git
 cd web-monitor
 
-# Install dependencies
-npm install          # or yarn install
+# 2. Install dependencies
+npm install          # or yarn
 
-# Create the environment configuration
+# 3. Set up the environment
 cp .env.example .env
-# Edit .env as needed
+# Edit .env to suit your environment
 
-# Run in development mode (hot reload)
+# 4. Run in development mode (hot reloading)
 npm run dev
 
-# Build and run a production instance
+# 5. Build and start a production instance
 npm run build
 npm start
 ```
 
-Open <http://localhost:3000> to view the live dashboard.
+Open <http://localhost:3000> in your browser to view the dashboard.
 
---- 
+---
 
 ## Configuration
 
 ### Environment variables
 
-Create a `.env` file in the project root. The template below shows the available options:
+Create a `.env` file in the project root. The following table lists the available options and their defaults:
 
-| Variable            | Default | Description                                                      |
-|---------------------|---------|------------------------------------------------------------------|
-| `POLL_INTERVAL_MS`  | `30000` | Time (ms) between successive polls of each endpoint.               |
-| `ALERT_THRESHOLD_MS` | `1200` | Latency (ms) that triggers an alert.                               |
-| `SLACK_WEBHOOK`     | `""`    | Incoming Slack webhook URL (leave empty to disable).             |
-| `SMTP_HOST`         | `""`    | SMTP host for email alerts (leave empty to disable).             |
-| `SMTP_PORT`         | `587`   | SMTP port.                                                       |
-| `SMTP_USER`         | `""`    | SMTP username.                                                   |
-| `SMTP_PASS`         | `""`    | SMTP password.                                                   |
-| `LOG_ROTATION`      | `false` | If `true`, delete logs older than the retention period.          |
+| Variable              | Default | Description |
+|-----------------------|---------|-------------|
+| `POLL_INTERVAL_MS`    | `30000` | Time (ms) between polls of each endpoint. |
+| `ALERT_THRESHOLD_MS`  | `1200`  | Latency (ms) that triggers an alert. |
+| `SLACK_WEBHOOK`       | `""`    | Incoming Slack webhook URL (leave empty to disable). |
+| `SMTP_HOST`           | `""`    | SMTP host for email alerts (leave empty to disable). |
+| `SMTP_PORT`           | `587`   | SMTP port. |
+| `SMTP_USER`           | `""`    | SMTP username. |
+| `SMTP_PASS`           | `""`    | SMTP password. |
+| `LOG_ROTATION`         | `false` | If `true`, delete logs older than the retention period. |
 
-A minimum of one notification channel (Slack **or** email) must be configured for alerts to be sent.
+**Note:** At least one notification channel (Slack **or** SMTP) must be configured for alerts to be sent.
 
 ### Endpoints
 
-Define the URLs you want to monitor in `config/endpoints.json`:
+List the URLs you want to monitor in `config/endpoints.json`:
 
 ```json
 [
@@ -91,7 +90,7 @@ Each URL appears as an independent card on the dashboard.
 
 ### Theming
 
-Add a `theme.json` file next to `config/endpoints.json`. The file supports `${VAR}` interpolation and simple SASS‑style helpers (`lighten`, `darken`, `rgba`, etc.):
+Place a `theme.json` file next to `config/endpoints.json`. It supports `${VAR}` interpolation and simple SASS‑style helpers (`lighten`, `darken`, `rgba`, etc.):
 
 ```json
 {
@@ -103,22 +102,23 @@ Add a `theme.json` file next to `config/endpoints.json`. The file supports `${VA
 
 See the bundled `theme.json` for a full list of available options.
 
---- 
+---
 
 ## Features
 
-- **Real‑time updates** via WebSocket
-- **Heatmap** of per‑endpoint latency
-- **Alerts** through Slack, SMTP email, or both
-- **Log rotation** (toggleable)
-- **Custom theming** with `theme.json`
-- Zero‑configuration endpoint discovery (add to `endpoints.json`)
+- Real‑time metrics via WebSocket
+- Latency heatmap per endpoint
+- Uptime and error tracking
+- Alerts through Slack, SMTP email, or both
+- Log rotation (toggleable)
+- Custom theming with `theme.json`
+- Zero‑config endpoint discovery (add to `endpoints.json`)
 
---- 
+---
 
 ## Architecture
 
-```text
+```
 config/endpoints.json
         │
         ▼
@@ -131,7 +131,7 @@ src/alerts.js          → Evaluates thresholds, triggers Slack/email
 src/dashboard.js       → Streams metrics to the UI via WebSocket
 ```
 
---- 
+---
 
 ## Development
 
@@ -151,13 +151,13 @@ The Jest test suite covers polling logic, alert evaluation, and HTTP routes.
 ### Linting & formatting
 
 ```bash
-npm run lint     # Lint with ESLint
-npm run format   # Format with Prettier
+npm run lint     # ESLint
+npm run format   # Prettier
 ```
 
-Both should pass before opening a pull request.
+Both should pass before submitting a pull request.
 
---- 
+---
 
 ## Contributing
 
@@ -168,22 +168,24 @@ Both should pass before opening a pull request.
 5. Push and open a pull request.  
 6. Verify that linting passes.
 
-All contributions are welcome—please maintain the code style and keep tests passing.
+All contributions are welcome—please keep the code style consistent and include tests where applicable.
 
---- 
+---
 
 ## Changelog
 
 ### v2.4.1 – 2026‑07‑14
+
 - Added log rotation toggle.  
 - Improved heatmap responsiveness.  
 - Fixed theme variable parsing.
 
 ### v2.3.0 – 2026‑05‑02
+
 - Introduced Slack alert support.  
 - Added advanced dashboard theming.
 
---- 
+---
 
 ## License
 
