@@ -1,7 +1,7 @@
-[K[2m  [2mmodel deepseek-ai/deepseek-v4.1-flash failed, trying next...[0m[0m
-# web‑monitor
+[K[2m  [2mmodel z-ai/glm-5.3-flash failed, trying next...[0m[0m
+# web-monitor
 
-**web‑monitor** is a lightweight real‑time dashboard for watching the uptime, latency, and error rates of HTTP endpoints. It polls URLs on a configurable schedule and streams live updates to the browser through WebSockets.
+**web-monitor** is a lightweight, real-time dashboard for monitoring the uptime, latency, and error rates of HTTP endpoints. It polls URLs on a configurable schedule and streams live updates to the browser over WebSockets.
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)
 ![Version](https://img.shields.io/github/v/tag/shubhyagami/web-monitor?label=version)
@@ -13,7 +13,7 @@
 
 ## Table of contents
 
-- [Quick start](#quick-start)
+- [Getting started](#getting-started)
 - [Features](#features)
 - [Architecture](#architecture)
 - [Configuration](#configuration)
@@ -30,7 +30,9 @@
 
 ---
 
-## Quick start
+## Getting started
+
+You will need Node.js and npm (or Yarn).
 
 ```bash
 git clone https://github.com/shubhyagami/web-monitor.git
@@ -39,6 +41,7 @@ npm install          # or yarn install
 cp .env.example .env
 # Edit .env with your values
 npm run dev          # development build with hot reloading
+
 # For a production build:
 npm run build
 npm start
@@ -50,12 +53,12 @@ Open <http://localhost:3000> in your browser.
 
 ## Features
 
-- **Real‑time metrics** – WebSocket push updates with sub‑second latency.
-- **Heatmaps & charts** – Visualise latency, uptime, and error trends.
-- **Statistical summaries** – Uptime percentage, status‑code distribution.
+- **Real-time metrics** – WebSocket push updates with sub-second latency.
+- **Heatmaps and charts** – Visualize latency, uptime, and error trends.
+- **Statistical summaries** – Uptime percentage and status-code distribution.
 - **Alerting** – Slack webhook, SMTP email, or both.
-- **Theming** – `theme.json` supports `${VAR}` interpolation and SASS‑style helpers.
-- **In‑memory storage** – No disk I/O, quick polling.
+- **Theming** – `theme.json` supports `${VAR}` interpolation and SASS-style helpers.
+- **In-memory storage** – No disk I/O, quick polling.
 - **Simple discovery** – Endpoints loaded from a JSON file.
 
 ---
@@ -92,7 +95,7 @@ Create a `.env` file in the root (template: `.env.example`).
 | `SMTP_PORT`           | `587`           | SMTP server port. |
 | `SMTP_USER`           | `""`            | SMTP username (optional). |
 | `SMTP_PASS`           | `""`            | SMTP password (optional). |
-| `LOG_ROTATION`       | `false`         | If `true`, delete logs older than the retention period. |
+| `LOG_ROTATION`        | `false`         | If `true`, delete logs older than the retention period. |
 
 > **Tip:** Provide at least one alert method (`SLACK_WEBHOOK` or SMTP settings) to receive notifications.
 
@@ -109,7 +112,7 @@ Place a JSON array of URLs in `config/endpoints.json`. Each URL creates a card o
 
 ### UI theming
 
-`config/theme.json` lets you override UI variables. Values support `${VAR}` interpolation and SASS‑style helpers like `lighten()`.
+`config/theme.json` lets you override UI variables. Values support `${VAR}` interpolation and SASS-style helpers like `lighten()`.
 
 ```json
 {
@@ -124,6 +127,7 @@ Place a JSON array of URLs in `config/endpoints.json`. Each URL creates a card o
 ## Alerting
 
 When a request latency exceeds `ALERT_THRESHOLD_MS`, the system sends:
+
 - A Slack message (if `SLACK_WEBHOOK` is set).
 - An email via the provided SMTP configuration.
 
@@ -136,13 +140,13 @@ All alerts are also logged to the console for immediate debugging.
 ### Scripts
 
 | Command          | Purpose |
-|-----------------|---------|
-| `npm run dev`   | Starts the dev server with hot reloading. |
-| `npm run build`| Builds a production bundle. |
-| `npm start`     | Runs the production server. |
-| `npm run lint`  | Runs ESLint. |
-| `npm run format`| Formats code with Prettier. |
-| `npm test`      | Runs the Jest test suite. |
+|------------------|---------|
+| `npm run dev`    | Starts the dev server with hot reloading. |
+| `npm run build`  | Builds a production bundle. |
+| `npm start`      | Runs the production server. |
+| `npm run lint`   | Runs ESLint. |
+| `npm run format` | Formats code with Prettier. |
+| `npm test`       | Runs the Jest test suite. |
 
 ### Testing and linting
 
@@ -162,18 +166,18 @@ All tests must pass and linting must be clean before submitting a pull request.
 3. Commit with a clear message.
 4. Push to your fork and open a pull request.
 
-Follow the project's coding style and open issues for discussion or feature requests.
+Follow the project's coding style. Open an issue for discussion or feature requests.
 
 ---
 
 ## Changelog
 
-### v2.4.1 – 2026‑07‑14
+### v2.4.1 – 2026-07-14
 - Added optional log rotation.
 - Improved latency heatmap rendering.
 - Fixed bug in `theme.json` variable parsing.
 
-### v2.3.0 – 2026‑05‑02
+### v2.3.0 – 2026-05-02
 - Integrated Slack webhook notifications.
 - Added advanced dashboard theming via `theme.json`.
 
