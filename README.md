@@ -1,6 +1,7 @@
+[K[2m  [2mmodel z-ai/glm-5.3-flash failed, trying next...[0m[0m
 # web-monitor
 
-**web-monitor** is a lightweight dashboard for monitoring the uptime, latency, and error rates of HTTP endpoints. It polls URLs on a configurable schedule and streams live results to the browser over WebSockets.
+**web-monitor** is a lightweight dashboard for monitoring the uptime, latency, and error rates of HTTP endpoints. It polls each URL on a configurable schedule and streams live results to the browser over WebSockets — no database required.
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)
 ![Version](https://img.shields.io/github/v/tag/shubhyagami/web-monitor?label=version)
@@ -31,7 +32,7 @@
 
 ## Getting started
 
-Requires Node.js and npm (or Yarn) installed locally.
+You need Node.js and npm (or Yarn) installed locally.
 
 ```bash
 git clone https://github.com/shubhyagami/web-monitor.git
@@ -56,7 +57,7 @@ Then open <http://localhost:3000> in your browser.
 - **Statistical summaries** — uptime percentage and status-code distribution per endpoint.
 - **Alerting** — Slack webhook, SMTP email, or both.
 - **Theming** — customize colors and fonts via `config/theme.json`, with `${VAR}` interpolation.
-- **Zero-config storage** — in-memory storage, no database or disk I/O required.
+- **Zero-config storage** — in-memory storage; no database or disk I/O required.
 - **Simple discovery** — endpoints are defined in a single JSON file.
 
 ---
@@ -99,7 +100,7 @@ Copy `.env.example` to `.env` in the project root and adjust the values.
 
 ### Endpoints to monitor
 
-Add a JSON array of URLs to `config/endpoints.json`. Each URL appears as a card on the dashboard.
+Add a JSON array of URLs to `config/endpoints.json`. Each URL is rendered as a card on the dashboard.
 
 ```json
 [
@@ -124,12 +125,12 @@ Add a JSON array of URLs to `config/endpoints.json`. Each URL appears as a card 
 
 ## Alerting
 
-When a request latency exceeds `ALERT_THRESHOLD_MS`, web-monitor sends:
+When a request's latency exceeds `ALERT_THRESHOLD_MS`, web-monitor sends:
 
 - a Slack message, if `SLACK_WEBHOOK` is set;
 - an email through the configured SMTP server.
 
-Alerts are also logged to the console for easier debugging.
+Alerts are also logged to the console to make debugging easier.
 
 ---
 
