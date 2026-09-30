@@ -1,24 +1,29 @@
 [K[2m  [2mmodel z-ai/glm-5.3-flash failed, trying next...[0m[0m
-# web-monitor
+[K[2m  [2mmodel deepseek-ai/deepseek-v4.1-flash failed, trying next...[0m[0m
+# web‑monitor
 
-**web-monitor** is a lightweight dashboard for monitoring the uptime, latency, and error rates of HTTP endpoints. It polls each URL on a configurable schedule and streams live results to the browser over WebSockets — no database required.
+A lightweight dashboard that watches the uptime, latency, and error rate of any HTTP(S) endpoint.  
+It talks to the browser over WebSockets so you get real‑time updates without a database or a persistent storage layer.
 
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodejs&logoColor=white)
-![Version](https://img.shields.io/github/v/tag/shubhyagami/web-monitor?label=version)
-![CI](https://github.com/shubhyagami/web-monitor/actions/workflows/ci.yml/badge.svg?branch=main)
+![Node.js](https://img.shields.io/badge/Node.js-%23339933?logo=nodejs&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+![CI](https://github.com/shubhyagami/web-monitor/actions/workflows/ci.yml/badge.svg?branch=main)
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+![Version](https://img.shields.io/github/v/tag/shubhyagami/web-monitor?label=version)
 
 ---
 
 ## Table of contents
 
 - [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running](#running)
 - [Features](#features)
 - [Architecture](#architecture)
 - [Configuration](#configuration)
   - [Environment variables](#environment-variables)
-  - [Endpoints to monitor](#endpoints-to-monitor)
+  - [Endpoints](#endpoints-to-monitor)
   - [UI theming](#ui-theming)
 - [Alerting](#alerting)
 - [Development](#development)
@@ -32,33 +37,44 @@
 
 ## Getting started
 
-You need Node.js and npm (or Yarn) installed locally.
+### Prerequisites
+
+- Node.js 20 or newer
+- npm (or Yarn)
+
+### Installation
 
 ```bash
 git clone https://github.com/shubhyagami/web-monitor.git
 cd web-monitor
-npm install            # or yarn install
-cp .env.example .env   # fill in your values
-npm run dev            # development server with hot reloading
+npm install          # or `yarn install`
+cp .env.example .env # customize the values
+```
+
+### Running
+
+```bash
+# Development
+npm run dev          # Hot‑reload server, opens http://localhost:3000
 
 # Production build
 npm run build
 npm start
 ```
 
-Then open <http://localhost:3000> in your browser.
+Open <http://localhost:3000> in a browser after the server starts.
 
 ---
 
 ## Features
 
-- **Real-time updates** — metrics are pushed to the browser over WebSockets with sub-second latency.
-- **Charts and heatmaps** — visualize latency, uptime, and error-rate trends at a glance.
-- **Statistical summaries** — uptime percentage and status-code distribution per endpoint.
-- **Alerting** — Slack webhook, SMTP email, or both.
-- **Theming** — customize colors and fonts via `config/theme.json`, with `${VAR}` interpolation.
-- **Zero-config storage** — in-memory storage; no database or disk I/O required.
-- **Simple discovery** — endpoints are defined in a single JSON file.
+- **Real‑time metrics** – WebSocket pushes keep the dashboard up to date with sub‑second latency.
+- **Heatmaps & charts** – Visualise latency, uptime, and error‑rate trends.
+- **Statistical summaries** – Uptime percentage and status‑code distribution per endpoint.
+- **Alerts** – Slack webhook, SMTP email, or both.
+- **Theming** – Customise colors, fonts, and layout via `config/theme.json` (supports `${VAR}` interpolation).
+- **Zero‑config storage** – All data lives in memory; no disk or database required.
+- **Simple discovery** – A single JSON file lists every endpoint to watch.
 
 ---
 
@@ -68,12 +84,12 @@ Then open <http://localhost:3000> in your browser.
 config/endpoints.json → src/poller.ts → src/alerts.ts → src/dashboard.ts → Browser UI
 ```
 
-| Layer | Responsibility |
-|-------|----------------|
-| **Poller** | Periodically requests each URL defined in `endpoints.json`. |
-| **Alerts** | Compares latency against `ALERT_THRESHOLD_MS` and triggers notifications. |
-| **Dashboard** | Publishes metric updates to the browser over WebSocket. |
-| **UI** | Renders heatmaps, charts, and status cards. |
+| Layer       | Responsibility |
+|-------------|------------------|
+| **Poller**  | Sends HTTP requests on a configurable schedule. |
+| **Alerts**  | Checks latency against `ALERT_THRESHOLD_MS` and fires notifications. |
+| **Dashboard** | Publishes metric updates to the browser via WebSocket. |
+| **UI**      | Renders charts, heatmaps, and status cards. |
 
 ---
 
@@ -81,26 +97,24 @@ config/endpoints.json → src/poller.ts → src/alerts.ts → src/dashboard.ts �
 
 ### Environment variables
 
-Copy `.env.example` to `.env` in the project root and adjust the values.
+| Variable          | Default | Purpose |
+|-------------------|---------|---------|
+| `NODE_ENV`        | `development` | Runtime mode. |
+| `PORT`             | `3000` | HTTP server port. |
+| `POLL_INTERVAL_MS` | `30000` | Polling frequency. |
+| `ALERT_THRESHOLD_MS` | `1200` | Latency threshold that triggers an alert. |
+| `SLACK_WEBHOOK`   | `""` | Slack incoming webhook URL. |
+| `SMTP_HOST`       | `""` | SMTP server host. |
+| `SMTP_PORT`       | `587` | SMTP server port. |
+| `SMTP_USER`       | `""` | SMTP username. |
+| `SMTP_PASS`       | `""` | SMTP password. |
+| `LOG_ROTATION`    | `false` | Trim logs older than the retention period. |
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `NODE_ENV` | `development` | Runtime mode. |
-| `PORT` | `3000` | Web server port. |
-| `POLL_INTERVAL_MS` | `30000` | How often endpoints are polled, in milliseconds. |
-| `ALERT_THRESHOLD_MS` | `1200` | Latency threshold (ms) that triggers an alert. |
-| `SLACK_WEBHOOK` | `""` | Slack incoming webhook URL (optional). |
-| `SMTP_HOST` | `""` | SMTP server host (optional). |
-| `SMTP_PORT` | `587` | SMTP server port. |
-| `SMTP_USER` | `""` | SMTP username (optional). |
-| `SMTP_PASS` | `""` | SMTP password (optional). |
-| `LOG_ROTATION` | `false` | When `true`, deletes logs older than the retention period. |
-
-> **Tip:** Configure at least one alert method (`SLACK_WEBHOOK` or SMTP settings) to receive notifications.
+> **Tip** – Configure at least one alert method (`SLACK_WEBHOOK` or the SMTP settings) to receive notifications.
 
 ### Endpoints to monitor
 
-Add a JSON array of URLs to `config/endpoints.json`. Each URL is rendered as a card on the dashboard.
+Create a JSON array file at `config/endpoints.json`. Each string in the array becomes a card on the dashboard.
 
 ```json
 [
@@ -111,7 +125,7 @@ Add a JSON array of URLs to `config/endpoints.json`. Each URL is rendered as a c
 
 ### UI theming
 
-`config/theme.json` overrides UI variables. Values support `${VAR}` interpolation and SASS-style helpers such as `lighten()`.
+`config/theme.json` contains CSS variables that override the default theme. Variables can reference other variables.
 
 ```json
 {
@@ -125,12 +139,11 @@ Add a JSON array of URLs to `config/endpoints.json`. Each URL is rendered as a c
 
 ## Alerting
 
-When a request's latency exceeds `ALERT_THRESHOLD_MS`, web-monitor sends:
+If a request’s latency exceeds `ALERT_THRESHOLD_MS`:
 
-- a Slack message, if `SLACK_WEBHOOK` is set;
-- an email through the configured SMTP server.
-
-Alerts are also logged to the console to make debugging easier.
+1. A Slack message is sent if `SLACK_WEBHOOK` is set.
+2. An email is dispatched via the configured SMTP server.
+3. The alert is logged to the console for debugging.
 
 ---
 
@@ -138,14 +151,14 @@ Alerts are also logged to the console to make debugging easier.
 
 ### Scripts
 
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Starts the dev server with hot reloading. |
-| `npm run build` | Builds a production bundle. |
-| `npm start` | Runs the production server. |
-| `npm run lint` | Runs ESLint. |
-| `npm run format` | Formats code with Prettier. |
-| `npm test` | Runs the Jest test suite. |
+| Command       | Purpose |
+|---------------|---------|
+| `npm run dev` | Start dev server with hot reloading. |
+| `npm run build` | Create a production bundle. |
+| `npm start`   | Run the production server. |
+| `npm run lint` | Run ESLint. |
+| `npm run format` | Format code with Prettier. |
+| `npm test`    | Execute Jest tests. |
 
 ### Testing and linting
 
@@ -154,18 +167,18 @@ npm test
 npm run lint
 ```
 
-All tests must pass and linting must be clean before a pull request is submitted.
+All tests must pass and linting must be clean before submitting a pull request.
 
 ---
 
 ## Contributing
 
-1. Fork the repo and create a feature branch: `git checkout -b feat/your-feature`.
-2. Make your changes, run the test suite, and keep the lint clean.
-3. Commit with a clear message.
+1. Fork the repository and create a feature branch: `git checkout -b feat/your-feature`.
+2. Make your changes, run the tests, and keep linting clean.
+3. Commit with a descriptive message.
 4. Push to your fork and open a pull request.
 
-Please follow the project's coding style, and open an issue first to discuss larger changes or feature requests.
+For larger changes, open an issue first to discuss the scope.
 
 ---
 
