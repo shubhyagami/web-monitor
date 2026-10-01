@@ -1,9 +1,7 @@
 [K[2m  [2mmodel z-ai/glm-5.3-flash failed, trying next...[0m[0m
-[K[2m  [2mmodel deepseek-ai/deepseek-v4.1-flash failed, trying next...[0m[0m
-# web‑monitor
+# web-monitor
 
-A lightweight dashboard that watches the uptime, latency, and error rate of any HTTP(S) endpoint.  
-It talks to the browser over WebSockets so you get real‑time updates without a database or a persistent storage layer.
+A lightweight dashboard that watches the uptime, latency, and error rate of any HTTP(S) endpoint. It streams updates to the browser over WebSockets, so you get real-time metrics without a database or any persistent storage.
 
 ![Node.js](https://img.shields.io/badge/Node.js-%23339933?logo=nodejs&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -23,7 +21,7 @@ It talks to the browser over WebSockets so you get real‑time updates without a
 - [Architecture](#architecture)
 - [Configuration](#configuration)
   - [Environment variables](#environment-variables)
-  - [Endpoints](#endpoints-to-monitor)
+  - [Endpoints to monitor](#endpoints-to-monitor)
   - [UI theming](#ui-theming)
 - [Alerting](#alerting)
 - [Development](#development)
@@ -36,6 +34,8 @@ It talks to the browser over WebSockets so you get real‑time updates without a
 ---
 
 ## Getting started
+
+Clone the repo, install dependencies, point it at a few endpoints, and start the server. The dashboard will be live at `http://localhost:3000` within a few seconds.
 
 ### Prerequisites
 
@@ -54,26 +54,26 @@ cp .env.example .env # customize the values
 ### Running
 
 ```bash
-# Development
-npm run dev          # Hot‑reload server, opens http://localhost:3000
+# Development (hot reload)
+npm run dev          # serves at http://localhost:3000
 
-# Production build
+# Production
 npm run build
 npm start
 ```
 
-Open <http://localhost:3000> in a browser after the server starts.
+Then open <http://localhost:3000> in your browser.
 
 ---
 
 ## Features
 
-- **Real‑time metrics** – WebSocket pushes keep the dashboard up to date with sub‑second latency.
-- **Heatmaps & charts** – Visualise latency, uptime, and error‑rate trends.
-- **Statistical summaries** – Uptime percentage and status‑code distribution per endpoint.
+- **Real-time metrics** – WebSocket pushes keep the dashboard current with sub-second latency.
+- **Heatmaps and charts** – Visualize latency, uptime, and error-rate trends over time.
+- **Statistical summaries** – Uptime percentage and status-code distribution per endpoint.
 - **Alerts** – Slack webhook, SMTP email, or both.
-- **Theming** – Customise colors, fonts, and layout via `config/theme.json` (supports `${VAR}` interpolation).
-- **Zero‑config storage** – All data lives in memory; no disk or database required.
+- **Theming** – Customize colors, fonts, and layout via `config/theme.json` (supports `${VAR}` interpolation).
+- **Zero-config storage** – All data lives in memory; no disk or database required.
 - **Simple discovery** – A single JSON file lists every endpoint to watch.
 
 ---
@@ -84,12 +84,12 @@ Open <http://localhost:3000> in a browser after the server starts.
 config/endpoints.json → src/poller.ts → src/alerts.ts → src/dashboard.ts → Browser UI
 ```
 
-| Layer       | Responsibility |
-|-------------|------------------|
-| **Poller**  | Sends HTTP requests on a configurable schedule. |
-| **Alerts**  | Checks latency against `ALERT_THRESHOLD_MS` and fires notifications. |
-| **Dashboard** | Publishes metric updates to the browser via WebSocket. |
-| **UI**      | Renders charts, heatmaps, and status cards. |
+| Layer         | Responsibility |
+|---------------|----------------|
+| **Poller**    | Sends HTTP requests on a configurable schedule. |
+| **Alerts**    | Compares latency against `ALERT_THRESHOLD_MS` and fires notifications. |
+| **Dashboard** | Publishes metric updates to the browser over WebSocket. |
+| **UI**        | Renders charts, heatmaps, and status cards. |
 
 ---
 
@@ -97,24 +97,24 @@ config/endpoints.json → src/poller.ts → src/alerts.ts → src/dashboard.ts �
 
 ### Environment variables
 
-| Variable          | Default | Purpose |
-|-------------------|---------|---------|
-| `NODE_ENV`        | `development` | Runtime mode. |
-| `PORT`             | `3000` | HTTP server port. |
-| `POLL_INTERVAL_MS` | `30000` | Polling frequency. |
-| `ALERT_THRESHOLD_MS` | `1200` | Latency threshold that triggers an alert. |
-| `SLACK_WEBHOOK`   | `""` | Slack incoming webhook URL. |
-| `SMTP_HOST`       | `""` | SMTP server host. |
-| `SMTP_PORT`       | `587` | SMTP server port. |
-| `SMTP_USER`       | `""` | SMTP username. |
-| `SMTP_PASS`       | `""` | SMTP password. |
-| `LOG_ROTATION`    | `false` | Trim logs older than the retention period. |
+| Variable              | Default       | Purpose |
+|-----------------------|---------------|---------|
+| `NODE_ENV`            | `development` | Runtime mode. |
+| `PORT`                | `3000`        | HTTP server port. |
+| `POLL_INTERVAL_MS`    | `30000`       | Polling frequency, in milliseconds. |
+| `ALERT_THRESHOLD_MS`  | `1200`        | Latency threshold that triggers an alert. |
+| `SLACK_WEBHOOK`       | `""`          | Slack incoming webhook URL. |
+| `SMTP_HOST`           | `""`          | SMTP server host. |
+| `SMTP_PORT`           | `587`         | SMTP server port. |
+| `SMTP_USER`           | `""`          | SMTP username. |
+| `SMTP_PASS`           | `""`          | SMTP password. |
+| `LOG_ROTATION`        | `false`       | Trim logs older than the retention period. |
 
 > **Tip** – Configure at least one alert method (`SLACK_WEBHOOK` or the SMTP settings) to receive notifications.
 
 ### Endpoints to monitor
 
-Create a JSON array file at `config/endpoints.json`. Each string in the array becomes a card on the dashboard.
+Create a JSON array at `config/endpoints.json`. Each string in the array becomes a card on the dashboard.
 
 ```json
 [
@@ -139,7 +139,7 @@ Create a JSON array file at `config/endpoints.json`. Each string in the array be
 
 ## Alerting
 
-If a request’s latency exceeds `ALERT_THRESHOLD_MS`:
+When a request's latency exceeds `ALERT_THRESHOLD_MS`, the following happens:
 
 1. A Slack message is sent if `SLACK_WEBHOOK` is set.
 2. An email is dispatched via the configured SMTP server.
@@ -151,14 +151,14 @@ If a request’s latency exceeds `ALERT_THRESHOLD_MS`:
 
 ### Scripts
 
-| Command       | Purpose |
-|---------------|---------|
-| `npm run dev` | Start dev server with hot reloading. |
-| `npm run build` | Create a production bundle. |
-| `npm start`   | Run the production server. |
-| `npm run lint` | Run ESLint. |
-| `npm run format` | Format code with Prettier. |
-| `npm test`    | Execute Jest tests. |
+| Command           | Purpose |
+|-------------------|---------|
+| `npm run dev`     | Start the dev server with hot reloading. |
+| `npm run build`   | Create a production bundle. |
+| `npm start`       | Run the production server. |
+| `npm run lint`    | Run ESLint. |
+| `npm run format`  | Format code with Prettier. |
+| `npm test`        | Execute the Jest test suite. |
 
 ### Testing and linting
 
@@ -167,7 +167,7 @@ npm test
 npm run lint
 ```
 
-All tests must pass and linting must be clean before submitting a pull request.
+All tests must pass and linting must be clean before you submit a pull request.
 
 ---
 
@@ -178,7 +178,7 @@ All tests must pass and linting must be clean before submitting a pull request.
 3. Commit with a descriptive message.
 4. Push to your fork and open a pull request.
 
-For larger changes, open an issue first to discuss the scope.
+For larger changes, please open an issue first to discuss the scope.
 
 ---
 
